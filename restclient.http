@@ -1,0 +1,21 @@
+# get posts
+GET http://localhost:8080/posts
+
+# create posts
+POST http://localhost:8080/posts
+Content-Type: application/json
+
+{
+        "title": "post1"
+}
+
+# get comments
+GET http://localhost:8081/posts/1/comments
+
+# create comments
+POST http://localhost:8081/posts/1/comments
+Content-Type: application/json
+
+{
+        "content": "comment 1"
+}
