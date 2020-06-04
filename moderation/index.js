@@ -5,7 +5,7 @@ const axios = require("axios");
 const app = express();
 app.use(bodyParser.json());
 
-const {PORT = 8083, EVENT_BUS_PORT = 8085} = process.env;
+const {PORT = 8083} = process.env;
 
 app.post("/events", async (req, res) => {
   const {type, data} = req.body;
@@ -13,7 +13,7 @@ app.post("/events", async (req, res) => {
     case "CommentCreated":
       // reject all comments containing orange keyword
       const status = data.content.includes("orange") ? "rejected" : "approved";
-      await axios.post(`http://localhost:${EVENT_BUS_PORT}/events`, {
+      await axios.post(`http://event-bus-clusterip-srv:8085/events`, {
         type: "CommentModerated",
         data: {
           id: data.id,

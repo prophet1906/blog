@@ -14,13 +14,13 @@ app.post("/events", (req, res) => {
 
   console.log(`Propagating event ${req.body.type}`);
   // posts service
-  axios.post("http://localhost:8080/events", event);
+  axios.post("http://posts-clusterip-srv:8080/events", event);
   // comments service
-  axios.post("http://localhost:8081/events", event);
+  axios.post("http://comments-clusterip-srv:8081/events", event);
   // query service
-  axios.post("http://localhost:8082/events", event);
+  axios.post("http://query-clusterip-srv:8082/events", event);
   // moderation service
-  axios.post("http://localhost:8083/events", event);
+  axios.post("http://moderation-clusterip-srv:8083/events", event);
 
   res.send({status: "OK"});
 });

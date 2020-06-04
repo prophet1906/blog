@@ -51,12 +51,12 @@ app.post("/events", (req, res) => {
   res.send({});
 });
 
-const {PORT = 8082, EVENT_BUS_PORT = 8085} = process.env;
+const {PORT = 8082} = process.env;
 
 app.listen(PORT, async () => {
   console.log(`query service listening on ${PORT}`);
   console.log(`reconstructing state from events`);
-  const res = await axios.get(`http://localhost:${EVENT_BUS_PORT}/events`);
+  const res = await axios.get(`http://event-bus-clusterip-srv:8085/events`);
 
   for (let event of res.data) {
     console.log(`Processing event: ${event.type}`);

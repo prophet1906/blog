@@ -8,7 +8,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-const {PORT = 8081, EVENT_BUS_PORT = 8085} = process.env;
+const {PORT = 8081} = process.env;
 
 const commentsByPostId = {};
 
@@ -22,7 +22,7 @@ app.post("/posts/:id/comments", async (req, res) => {
   const comments = commentsByPostId[req.params.id] || [];
   comments.push({id: commentId, content, status: "pending"});
   commentsByPostId[req.params.id] = comments;
-  await axios.post(`http://localhost:${EVENT_BUS_PORT}/events`, {
+  await axios.post(`http://event-bus-clusterip-srv:8085/events`, {
     type: "CommentCreated",
     data: {
       id: commentId,
@@ -45,7 +45,7 @@ app.post("/events", async (req, res) => {
         return comment.id === id;
       });
       comment.status = status;
-      await axios.post(`http://localhost:${EVENT_BUS_PORT}/events`, {
+      await axios.post(`http://event-bus-clusterip-srv:8085/events`, {
         type: "CommentUpdated",
         data: {
           id,
